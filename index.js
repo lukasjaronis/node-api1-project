@@ -22,7 +22,7 @@ server.get('/api/users', (request, response) => {
 })
 
 
-// add
+// add / insert
 
 server.post('/api/users', (request, response) => {
     const userData = request.body;
@@ -36,6 +36,23 @@ server.post('/api/users', (request, response) => {
         console.log(error);
         //handle the error
         response.status(500).json({errorMessage: 'Sorry, we ran into an error adding a user.'})
+    })
+
+})
+
+// remove
+
+server.delete('/api/users/:id', (request, response) => {
+    const id = request.params.id
+
+    Users.remove(id)
+    .then(removed => {
+        response.status(204).json(removed);
+    })
+    .catch(error => {
+        console.log(error);
+        //handle the error
+        response.status(500).json({errorMessage: 'Sorry, we ran into an error removing a user.'})
     })
 
 })
