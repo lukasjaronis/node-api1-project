@@ -101,10 +101,15 @@ server.put("/api/users/:id", (request, response) => {
   const id = request.params.id;
   const userData = request.body;
 
-  Users.update(id, userData)
-
+    Users.update(id, userData)
     .then(updated => {
-      response.status(204).json(updated);
+        if (updated) {
+            response.status(204).json(updated);
+        } else {
+            response.status(404).json({
+                errorMessage: 'The user with the specified ID does not exist.'
+            })
+        }
     })
     .catch(error => {
       console.log(error);
