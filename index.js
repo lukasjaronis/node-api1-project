@@ -6,10 +6,6 @@ server.use(express.json());
 
 const Users = require('./data/db');
 
-server.get('/', function(request, response) {
-    response.send({data: 'all the data'})
-})
-
 // get
 server.get('/api/users', (request, response) => {
 
@@ -24,6 +20,26 @@ server.get('/api/users', (request, response) => {
         })
     })
 })
+
+
+// add
+
+server.post('/api/users', (request, response) => {
+    const userData = request.body;
+
+
+    Users.insert(userData)
+    .then(added => {
+        response.status(201).json(added);
+    })
+    .catch(error => {
+        console.log(error);
+        //handle the error
+        response.status(500).json({errorMessage: 'Sorry, we ran into an error adding a user.'})
+    })
+
+})
+
 
 const port = 9000;
 server.listen(port, () => console.log(`API ONLINE ON PORT ${port}`));
