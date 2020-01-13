@@ -77,14 +77,21 @@ server.delete("/api/users/:id", (request, response) => {
 
   Users.remove(id)
     .then(removed => {
-      response.status(204).json(removed);
+        if (removed) {
+            response.status(204).json(removed);
+        } else {
+            response.status(404).json({
+                errorMessage: 'The user with the specified ID does not exist.'
+            })
+        }
+      
     })
     .catch(error => {
       console.log(error);
       //handle the error
       response
         .status(500)
-        .json({ errorMessage: "Sorry, we ran into an error removing a user." });
+        .json({ errorMessage: "The user could not be removed" });
     });
 });
 
