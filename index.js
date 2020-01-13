@@ -43,17 +43,24 @@ server.get('/api/users/:id', (request, response) => {
 
 server.post('/api/users', (request, response) => {
     const userData = request.body;
+    const { name, bio } = request.body;
+    console.log(userData);
 
-
-    Users.insert(userData)
-    .then(added => {
-        response.status(201).json(added);
-    })
-    .catch(error => {
-        console.log(error);
-        //handle the error
-        response.status(500).json({errorMessage: 'Sorry, we ran into an error adding a user.'})
-    })
+    if (!name || !bio) {
+        response.status(400).json({
+            errorMessage: 'Please provide name and bio for the user.'
+        })
+    } else {
+        Users.insert(userData)
+        .then(added => {
+            response.status(201).json(added);
+        })
+        .catch(error => {
+            console.log(error);
+        
+            response.status(500).json({errorMessage: 'Sorry, we ran into an error adding user.'})
+        })
+    } 
 
 })
 
