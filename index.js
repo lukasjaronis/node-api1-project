@@ -57,6 +57,26 @@ server.delete('/api/users/:id', (request, response) => {
 
 })
 
+// .put/.update
+
+
+server.put('/api/users/:id', (request, response) => {
+    const id = request.params.id
+    const userData = request.body;
+
+    Users.update(id, userData)
+
+    .then(updated => {
+        response.status(204).json(updated);
+    })
+    .catch(error => {
+        console.log(error);
+        //handle the error
+        response.status(500).json({errorMessage: 'Sorry, we ran into an error updating a user.'})
+    })
+
+})
+
 
 const port = 9000;
 server.listen(port, () => console.log(`API ONLINE ON PORT ${port}`));
