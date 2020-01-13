@@ -21,6 +21,23 @@ server.get('/api/users', (request, response) => {
     })
 })
 
+// find by id
+
+server.get('/api/users/:id', (request, response) => {
+    const id = request.params.id;
+
+    Users.findById(id)
+    .then(findingById => {
+        response.status(200).json(findingById);
+    })
+    .catch(error => {
+        console.log(error);
+        response.status(404).json({
+            errorMessage: 'Sorry, we ran into an issue finding this user.'
+        })
+    })
+})
+
 
 // add / insert
 
@@ -61,7 +78,7 @@ server.delete('/api/users/:id', (request, response) => {
 
 
 server.put('/api/users/:id', (request, response) => {
-    const id = request.params.id
+    const id = request.params.id;
     const userData = request.body;
 
     Users.update(id, userData)
@@ -76,6 +93,7 @@ server.put('/api/users/:id', (request, response) => {
     })
 
 })
+
 
 
 const port = 9000;
